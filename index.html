@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Form</title>
+</head>
+
+<body>
+
+    <h2>Register User</h2>
+
+    <input id="name" placeholder="Name"><br><br>
+    <input id="email" placeholder="Email"><br><br>
+    <input id="password" placeholder="Password"><br><br>
+
+    <button onclick="register()">Register</button>
+
+    <h3>Users List</h3>
+    <button onclick="getUsers()">Show Users</button>
+
+    <ul id="users"></ul>
+
+    <script>
+
+        // 🔹 Register User
+        async function register() {
+            const res = await fetch("http://localhost:5000/api/users/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: document.getElementById("name").value,
+                    email: document.getElementById("email").value,
+                    password: document.getElementById("password").value
+                })
+            });
+
+            const data = await res.json();
+            alert("User Saved in MongoDB ✅");
+        }
+
+        // 🔹 Get Users
+        async function getUsers() {
+            const res = await fetch("http://localhost:5000/api/users/test");
+            const users = await res.json();
+
+            let list = "";
+            users.forEach(user => {
+                list += `<li>${user.name} - ${user.email}</li>`;
+            });
+
+            document.getElementById("users").innerHTML = list;
+        }
+
+    </script>
+
+</body>
+
+</html>
